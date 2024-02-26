@@ -92,7 +92,7 @@ createFilterButtons();
 updateGalleryByCategory(0);
 });
 function gestion_login() {
-    const token = sessionStorage.getItem("token");
+    const token= sessionStorage.getItem("token");
     const loginLogoutLink = document.getElementById("connexionBtn");
     const filterElement = document.getElementById("filter"); 
     const modifElement = document.getElementById("modif-galerie");
