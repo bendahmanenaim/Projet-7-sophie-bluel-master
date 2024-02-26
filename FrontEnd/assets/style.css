@@ -439,6 +439,12 @@ footer nav ul {
 	cursor: pointer;
 	font-size: 18px;
 }
+.top {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
+	background-color: white;
+}
 
 .top1 {
 	display: flex;
@@ -575,7 +581,7 @@ footer nav ul {
 	display: flex;
 	cursor: pointer;
 	font-size: 21px;
-	background-color: white;
+	/*background-color: white;*/
 }
 
 .modal-new-photo {
@@ -638,8 +644,8 @@ footer nav ul {
 
 .modal-new-photo-form label,
 .modal-new-photo-form div,
-.top div,
-.top i {
+.top div
+{
 	background-color: white;
 }
 
