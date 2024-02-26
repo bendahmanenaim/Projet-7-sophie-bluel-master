@@ -101,7 +101,8 @@ function gestion_login() {
     if (filterElement && modifElement && modeEdition ) { 
     if (token) {
         // Changement du texte du bouton en "Logout"
-        loginLogoutLink.textContent = "Logout";
+    
+        loginLogoutLink.textContent ="logout";
         
 
         // Ajout de l'événement de déconnexion
