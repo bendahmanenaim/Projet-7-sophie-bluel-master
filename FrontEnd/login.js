@@ -38,11 +38,11 @@ async function loginUser() {
               window.location.href = "index.html";
         } else {
             // Connexion échouée
-            document.getElementById("login_error").innerText = data.message || "Erreur de connexion.";
+            document.getElementById("login_error").innerText = data.message || "Erreur dans l’identifiant ou le mot de passe";
         }
     } catch (error) {
         console.error("Erreur lors de la requête:", error);
-        document.getElementById("login_error").innerText = "Erreur de connexion.";
+        document.getElementById("login_error").innerText = "Erreur dans l’identifiant ou le mot de passe";
     }
 }
 

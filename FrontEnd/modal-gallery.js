@@ -168,10 +168,8 @@ function refreshGallery() {
 updateGalleryByCategory(0);
 // Fonction pour obtenir la catégorie actuelle
 function getCurrentSelectedCategoryId() {
-    // Vous devez remplacer cette logique par la façon dont vous obtenez la catégorie actuelle dans votre application
-    // Par exemple, si vous avez des boutons de filtre, vous pourriez stocker la catégorie actuelle dans une variable
-    // ou utiliser une classe pour indiquer la catégorie sélectionnée.
-    return 0; // Retourne la catégorie actuelle pour l'exemple, ajustez selon votre logique.
+
+    return 0; 
 }
 
 
