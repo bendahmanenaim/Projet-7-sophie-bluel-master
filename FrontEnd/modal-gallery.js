@@ -109,16 +109,29 @@ const CLOSE_MODAL = function (e) {
     BUTTON_CLOSE.removeEventListener('click', CLOSE_MODAL);
 };
 
-
-// Fonction suppression travaux
+// Fonction de suppression de travaux
 const DELETE_WORK = function (e) {
+    // Affiche dans la console l'élément à supprimer
     console.log("Element to delete: ", e.target);
+
+    // Demande une confirmation de suppression
     const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce projet ?");
 
+    // Vérifie si l'utilisateur a confirmé la suppression
     if (confirmation) {
         try {
+            // Appelle une fonction pour effectuer la suppression côté serveur
             deleteWorkFetch(e.target.id);
+
+            // Recherche l'élément HTML correspondant au projet supprimé
+            const deletedWorkFigure = document.querySelector(`[data-work-id="${e.target.id}"]`);
+
+            // Vérifie si l'élément existe et le supprime du DOM
+            if (deletedWorkFigure) {
+                GALLERY_MODALE.removeChild(deletedWorkFigure);
+            }
         } catch (error) {
+            // Affiche une erreur en cas de problème lors de la suppression
             console.error("Erreur lors de la suppression du projet:", error);
         }
     }
@@ -138,7 +151,7 @@ function deleteWorkFetch(idWork, categoryId) {
     .then(response => {
         if (response.status === 200 || response.status === 201 || response.status === 204) {
             // Rafraîchit la galerie après la suppression
-            refreshGallery();
+           // refreshGallery();//
             copyGalleryToModal(); // Rafraîchit également la modal
           
             if (categoryId !== undefined) {
@@ -148,20 +161,6 @@ function deleteWorkFetch(idWork, categoryId) {
             alert("Erreur lors de la suppression du projet.");
         }
     });
-}
-
-// Fonction pour rafraîchir la galerie
-function refreshGallery() {
-    const galleryContainer = document.getElementById('gallery');
-
-    if (galleryContainer) {
-        galleryContainer.innerHTML = '';
-
-        const selectedCategoryId = getCurrentSelectedCategoryId();
-        updateGalleryByCategory(selectedCategoryId);
-    } else {
-        console.error('Element avec ID "gallery" non trouvé dans le DOM.');
-    }
 }
 
 // Appel initial pour mettre à jour la galerie avec la catégorie par défaut (0)
