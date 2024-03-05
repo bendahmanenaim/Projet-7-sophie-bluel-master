@@ -136,6 +136,12 @@ button.filter-button.selected {
 a:hover{
 	color: #B1663C;
 }
+.color-a a{
+	color:#B1663C;
+    cursor: pointer;
+	text-decoration: none;
+
+}
 /****************bandeau_edition**************/
 
 .bandeau_edition {
