@@ -69,20 +69,40 @@ async function createFilterButtons() {
         if (filterContainer) {
             const allButton = document.createElement('button');
             allButton.innerText = 'Tous';
-            allButton.classList.add('styled', 'tous-button');
-            allButton.addEventListener('click', () => updateGalleryByCategory(0));
+            allButton.classList.add('styled', 'tous-button', 'filter-button');
+            allButton.addEventListener('click', () => {
+                updateGalleryByCategory(0);
+                handleButtonSelection(allButton);
+            });
+
             filterContainer.appendChild(allButton);
 
             categories.forEach(category => {
                 const categoryButton = document.createElement('button');
                 categoryButton.innerText = category.name;
-                categoryButton.addEventListener('click', () => updateGalleryByCategory(category.id));
+                categoryButton.classList.add('filter-button');
+                categoryButton.addEventListener('click', () => {
+                    updateGalleryByCategory(category.id);
+                    handleButtonSelection(categoryButton);
+                });
                 filterContainer.appendChild(categoryButton);
             });
         } else {
             console.error('Element avec ID "filter" non trouvé dans le DOM.');
         }
     }
+}
+// Fonction pour gérer la sélection/désélection des boutons
+function handleButtonSelection(selectedButton) {
+    const buttons = document.querySelectorAll('.filter-button');
+
+    buttons.forEach(button => {
+        if (button === selectedButton) {
+            button.classList.add('selected');
+        } else {
+            button.classList.remove('selected');
+        }
+    });
 }
 
 // Appele la fonction pour créer les boutons de filtre

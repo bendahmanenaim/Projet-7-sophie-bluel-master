@@ -103,7 +103,7 @@ h2{
 	background-color: #1D6154;
 	color:white;
 }
-button {
+button.filter-button {
 	font-size: 18px;
     border: solid #1D6154 2px; 
     line-height: 2.5; 
@@ -120,6 +120,11 @@ button:hover {
 	background-color: #DEEBFF;
 	background-color: #1D6154;
     color: white;
+}
+
+button.filter-button.selected {
+    background-color: #1D6154;
+    color: #fff;
 }
 
   /******************fin filtre*******************************/
