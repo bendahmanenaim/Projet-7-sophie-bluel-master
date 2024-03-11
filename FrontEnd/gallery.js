@@ -69,7 +69,7 @@ async function createFilterButtons() {
         if (filterContainer) {
             const allButton = document.createElement('button');
             allButton.innerText = 'Tous';
-            allButton.classList.add('styled', 'tous-button', 'filter-button');
+            allButton.classList.add('styled', 'tous-button', 'filter-button' ,'selected');
             allButton.addEventListener('click', () => {
                 updateGalleryByCategory(0);
                 handleButtonSelection(allButton);
