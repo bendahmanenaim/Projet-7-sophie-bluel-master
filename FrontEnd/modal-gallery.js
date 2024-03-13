@@ -3,45 +3,9 @@ const GALLERY_MODALE = document.querySelector(".modal-gallery");
 const BUTTON_CLOSE = document.querySelector('.js-modal-close-1');
 const MODALE_WRAPPER = document.querySelector(".modal-wrapper");
 const BUTTON_MODIF_WORKS = document.querySelector('#modif-galerie');
-const BASE_URL = "http://localhost:5678/api/";
-const WORKS_API = BASE_URL + "works";
 
 let modal = null;
-document.addEventListener('DOMContentLoaded', function () {
 
-
-// Fonction pour récupérer les données depuis le back-end
-async function fetchData(url) {
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
-        return null;
-    }
-}
-
-
-// Fonction pour mettre à jour la galerie en fonction de la catégorie sélectionnée
-async function updateGalleryByCategory(categoryId) {
-    const works = await fetchData(WORKS_API);
-
-    if (works) {
-        const galleryContainer = document.getElementById('gallery');
-        if (galleryContainer) {
-            galleryContainer.innerHTML = '';
-
-            works.forEach(work => {
-                if (work.categoryId === categoryId || categoryId === 0) {
-                    createWorkElement(work, galleryContainer);
-                }
-            });
-        } else {
-            console.error('Element avec ID "gallery" non trouvé dans le DOM.');
-        }
-    }
-}
 // Fonction ouverture boite modale 
 const OPEN_MODAL = async function (e) {
     e.preventDefault();
@@ -49,52 +13,7 @@ const OPEN_MODAL = async function (e) {
     modal.style.display = null;
     modal.addEventListener('click', CLOSE_MODAL);
     BUTTON_CLOSE.addEventListener('click', CLOSE_MODAL);
-    MODALE_WRAPPER.style.display = "flex";
-
-    const galleryContainer = document.getElementById('gallery');
-    const modalGalleryContainer = GALLERY_MODALE;
-
-    if (galleryContainer && modalGalleryContainer) {
-        modalGalleryContainer.innerHTML = ''; // Clear modal content before copying
-
-        const works = await fetchData(WORKS_API);
-
-        if (works) {
-            works.forEach(work => {
-                if (work.categoryId === getCurrentSelectedCategoryId() || getCurrentSelectedCategoryId() === 0) {
-                    createWorkElement(work, modalGalleryContainer, true);
-                }
-            });
-        } else {
-            console.error('Erreur lors de la récupération des travaux.');
-        }
-    } else {
-        console.error('Elements avec ID "gallery" ou "modal-gallery" non trouvés dans le DOM.');
-    }
-};
-
-// Ajustement de la fonction createWorkElement pour ajouter le bouton de suppression si nécessaire
-function createWorkElement(work, container, withDeleteButton = false) {
-    let figurework = document.createElement('figure');
-    let imgwork = document.createElement('img');
-    let figcaption = document.createElement('figcaption');
-
-    imgwork.src = work.imageUrl;
-    imgwork.alt = work.title;
-    figcaption.innerText = work.title;
-
-    figurework.appendChild(imgwork);
-    figurework.appendChild(figcaption);
-
-    if (withDeleteButton) {
-        // Ajout de l'identifiant du travail à l'élément figure
-        figurework.dataset.workId = work.id;
-        createDeleteButton(figurework, work);
-    }
-
-    container.appendChild(figurework);
-}
-
+    MODALE_WRAPPER.style.display = "flex"; 
 
 // Fonction fermeture boite modale 
 const CLOSE_MODAL = function (e) {
@@ -151,9 +70,7 @@ function deleteWorkFetch(idWork, categoryId) {
     .then(response => {
         if (response.status === 200 || response.status === 201 || response.status === 204) {
             // Rafraîchit la galerie après la suppression
-           // refreshGallery();//
-            copyGalleryToModal(); // Rafraîchit également la modal
-          
+             refreshGallery();
             if (categoryId !== undefined) {
                 addSelectedClass(categoryId); // Ajouter la classe "selected" à la catégorie sélectionnée si categoryId est défini
             }
@@ -162,15 +79,6 @@ function deleteWorkFetch(idWork, categoryId) {
         }
     });
 }
-
-// Appel initial pour mettre à jour la galerie avec la catégorie par défaut (0)
-updateGalleryByCategory(0);
-// Fonction pour obtenir la catégorie actuelle
-function getCurrentSelectedCategoryId() {
-
-    return 0; 
-}
-
 
 //CREATION D'UN BOUTON SUPPRIMER POUR CHAQUE IMAGE
 function createDeleteButton(figure, work) {
@@ -182,4 +90,3 @@ function createDeleteButton(figure, work) {
 }
    // Ajout listener sur clique bouton modifier pour appeler ouverture modale 
    BUTTON_MODIF_WORKS.addEventListener('click', OPEN_MODAL);
-});

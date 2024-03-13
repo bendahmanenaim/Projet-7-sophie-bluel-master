@@ -135,10 +135,10 @@ const UPLOAD_WORK = function(){
             resetPhotoSelection();
             // Réinitialise le formulaire
             resetForm();
-             // Ajouter le nouveau projet à la galerie modale
-            ajouterProjetAGalerieModale();
-            // Ajouter le nouveau projet à la galerie index
-            ajouterProjetAGalerieIndex();
+              // Rafraîchit l'affichage des travaux dans la modal
+            refreshWorks(GALLERY_MODALE, true);
+            // Rafraîchit l'affichage des travaux dans l'index
+            refreshWorks(GALLERY_DIV, false);
             // Effectue une vérification du formulaire
             VERIFICATION();
         } else if (response.status === 401){
@@ -150,31 +150,6 @@ const UPLOAD_WORK = function(){
         }
     });
 }
-
-// Fonction pour ajouter le nouveau projet à la galerie modale
-function ajouterProjetAGalerieModale() {
-    const conteneurGalerieModale = GALLERY_MODALE;
-
-    if (conteneurGalerieModale) {
-        // Récupère les nouveaux projets et les ajoute à la galerie modale
-        actualiserProjets(conteneurGalerieModale, true);
-    } else {
-        console.error('Élément avec l\'ID "modal-gallery" non trouvé dans le DOM.');
-    }
-}
-
-// Fonction pour ajouter le nouveau projet à la galerie index
-function ajouterProjetAGalerieIndex() {
-    const conteneurGalerieIndex = GALLERY_DIV;
-
-    if (conteneurGalerieIndex) {
-        // Récupère les nouveaux projets et les ajoute à la galerie index
-        actualiserProjets(conteneurGalerieIndex, false);
-    } else {
-        console.error('Élément avec l\'ID "gallery" non trouvé dans le DOM.');
-    }
-}
-
 
 // Fonction de vérification du formulaire complet
 const VERIFICATION = function (e) {
