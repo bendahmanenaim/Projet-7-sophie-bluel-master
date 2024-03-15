@@ -14,7 +14,7 @@ const OPEN_MODAL = async function (e) {
     modal.addEventListener('click', CLOSE_MODAL);
     BUTTON_CLOSE.addEventListener('click', CLOSE_MODAL);
     MODALE_WRAPPER.style.display = "flex"; 
-
+};
 // Fonction fermeture boite modale 
 const CLOSE_MODAL = function (e) {
     if (modal == null) return;
