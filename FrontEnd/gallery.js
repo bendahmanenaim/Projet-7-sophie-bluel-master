@@ -1,159 +1,149 @@
 
-document.addEventListener('DOMContentLoaded', function() {
 //CONSTANTES
 const BASE_URL = "http://localhost:5678/api/"
 const WORKS_API = BASE_URL+"works";
 const CATEGORY_API = BASE_URL+"categories";
+const galleryContainer = document.querySelector(".gallery"); 
+const filterContainer = document.querySelector(".filter");
 
-// Fonction pour récupérer les données depuis le back-end
-async function fetchData(url) {
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
-        return null;
-    }
+//Affichage les travaux dans la galerie
+fetchData(galleryContainer.false);
+
+// Fonction pour rafraichire les travaux
+function refreshGallery(targetDiv, deleteButton){
+    targetDiv.innerHTML ='';
+    fetchData(targetDiv,deleteButton);
 }
 
+
+// Fonction pour récupérer les données depuis le back-end
+function fetchData(targetDiv, deleteButton) {
+     // Vérifie si targetDiv est défini et qu'il s'agit d'un élément DOM valide
+     if (!targetDiv || !(targetDiv instanceof Element)) {
+        console.error('targetDiv est undefined ou invalide. Assurez-vous de passer un élément DOM valide.');
+        
+    }
+    fetch (WORKS_API)
+     .then (response => response.json())
+     .then(works =>{
+        workList=works;
+        for (let i=0; i< works.length; i++){
+            createWork(works[i], targetDiv, deleteButton);
+
+        }
+       });
+    } 
+
+
 // Fonction pour mettre à jour la galerie en fonction de la catégorie sélectionnée
-async function updateGalleryByCategory(categoryId) {
-    const works = await fetchData(WORKS_API);
+function createWork(work, targetDiv, deleteButton) {
 
-    if (works) {
-        const galleryContainer = document.getElementById('gallery');     /********** */
-        if (galleryContainer) {
-            galleryContainer.innerHTML = '';
-
-              
-              const displayedWorks = new Set();
-
-            works.forEach(work => {
-                // Vérification  si la catégorie correspond à celle sélectionnée
-                if (work.categoryId === categoryId || categoryId === 0) {
-                     // Vérification si le travail n'a pas déjà été ajouté à la galerie
-                     if (!displayedWorks.has(work.id)) {
                     // Création des éléments HTML pour chaque projet et les ajoutez à la galerie
-                    let figurework = document.createElement('figure');
-                    let imgwork = document.createElement('img');
+                    let figure = document.createElement('figure');
+                    let imgWorks = document.createElement('img');
                     let figcaption = document.createElement('figcaption');
 
                     // Ajout des attributs et du contenu aux éléments créés
-                    imgwork.src = work.imageUrl;
-                    imgwork.alt = work.title;
+                    imgWorks.src = work.imageUrl;
                     figcaption.innerText = work.title;
 
                     // Ajout des  éléments à la figure et la figure à la galerie
-                    figurework.appendChild(imgwork);
-                    figurework.appendChild(figcaption);
-                    galleryContainer.appendChild(figurework);
-                    
-                        // Ajout de l'identifiant du travail à l'ensemble
-                        displayedWorks.add(work.id);
-                     }
+                    figure.appendChild(imgWorks)
+                    figure.appendChild(figcaption)
+                    targetDiv.appendChild(figure);
+
+                if(deleteButton){
+                    createDeleteButton(figure,work)
                 }
-            });
-        } else {
-            console.error('Element avec ID "gallery" non trouvé dans le DOM.');
-        }
-    }
-}
+            }
+            //RECUPERATION DES CATEGORIES
+fetch (CATEGORY_API)
+.then (reponse => reponse.json())
+.then (categories => {
+    let filterWorks = new Set (categories)
+    let nouvelleCategorie = {id:0,name:"Tous"};
+    createFilterButton(nouvelleCategorie);
+    addSelectedClass(nouvelleCategorie.id)
+    for (let category of filterWorks) {
+        createFilterButton (category)
+    }   
+})
 
 // Fonction pour créer les boutons de filtre
-async function createFilterButtons() {
-    const categories = await fetchData(CATEGORY_API);
+ function createFilterButton(category) {
+    let categoryLink = document.createElement ("a")
+    categoryLink.id= "category"+category.id
+    categoryLink.classList.add("category")
+    categoryLink.innerHTML = category.name;
+    filterContainer.appendChild(categoryLink)
 
-    if (categories) {
-        const filterContainer = document.getElementById('filter');  /**********/ 
-        if (filterContainer) {
-            const allButton = document.createElement('button');
-            allButton.innerText = 'Tous';
-            allButton.classList.add('styled', 'tous-button', 'filter-button' ,'selected');
-            allButton.addEventListener('click', () => {
-                updateGalleryByCategory(0);
-                handleButtonSelection(allButton);
-            });
-
-            filterContainer.appendChild(allButton);
-
-            categories.forEach(category => {
-                const categoryButton = document.createElement('button');
-                categoryButton.innerText = category.name;
-                categoryButton.classList.add('filter-button');
-                categoryButton.addEventListener('click', () => {
-                    updateGalleryByCategory(category.id);
-                    handleButtonSelection(categoryButton);
-                });
-                filterContainer.appendChild(categoryButton);
-            });
-        } else {
-            console.error('Element avec ID "filter" non trouvé dans le DOM.');
-        }
-    }
-}
-// Fonction pour gérer la sélection/désélection des boutons
-function handleButtonSelection(selectedButton) {
-    const buttons = document.querySelectorAll('.filter-button');
-
-    buttons.forEach(button => {
-        if (button === selectedButton) {
-            button.classList.add('selected');
-        } else {
-            button.classList.remove('selected');
-        }
+// Ajout du EventListener sur les filtres
+    
+    categoryLink.addEventListener("click" ,function() {
+        filtreWorksByCategory(category.id);
     });
 }
-
-// Appele la fonction pour créer les boutons de filtre
-createFilterButtons();
-
-// Appele la fonction pour mettre à jour la galerie initiale
-updateGalleryByCategory(0);
-});
-function gestion_login() {
-    const token= sessionStorage.getItem("token");
-    const loginLogoutLink = document.getElementById("connexionBtn");
-    const filterElement = document.getElementById("filter"); 
-    const modifElement = document.getElementById("modif-galerie");
-    const modeEdition = document.getElementById("edition");  
-
-    if (filterElement && modifElement && modeEdition ) { 
-    if (token) {
-        // Changement du texte du bouton en "Logout"
+   function filtreWorksByCategory (categoryId){
+    galleryContainer.innerHTML=''
     
-        loginLogoutLink.textContent ="logout";
-        
+    //
+    for (let i=0 ;i<workList.lengh; i++){
+        if (workList[i].categoryId===categoryId || categoryId===0){
+            createWork (workList[i],galleryContainer,false)
+        }
+    }
+     // Gestion de la l'apparence des filtres (selection)
+     removeSelectedClass()
+     addSelectedClass(categoryId)
+   }
+   // Modification login en logout 
+  gestion_login();
 
-        // Ajout de l'événement de déconnexion
-        loginLogoutLink.addEventListener("click", function (event) {
-            event.preventDefault();
-
-            // Suppression du token du sessionStorage
-            sessionStorage.removeItem("token");
-
-            // Redirection vers la page d'accueil
-            window.location.href = "index.html";
-        });// Afficher ou masquer les boutons)
-        filterElement.style.display = "none"; 
-        modifElement.style.display = "inline-block";
-        modeEdition.style.display = "block";
-    } else {
-        // Utilisateur déconnecté
-        loginLogoutLink.textContent = "Login";
-
-        // Masquer ou afficher les boutons)
-        filterElement.style.display = "block";
-        modifElement.style.display = "none"; 
-        modeEdition.style.display = "none";
+  //Creation d'un bouton supprimer pour chaque image
+   function createDeleteButton (figure,work){
+    let button =document.createElement('i');
+    button.classList.add("fa-regular","fa-trash-can");
+    button.addEventListener('click',DELETE_WORK)
+    button.id= work.id
+    figure.appendChild(button)
+   }
+//
+function addSelectedClass (categoryId) {
+    document.getElementById("category"+categoryId).classList.add("selected")
+}
+//
+function removeSelectedClass(){
+    let filters=document.querySelectorAll(".category");
+    for (let i = 0; i <filters.length; i++) {
+        filters[i].classList.remove ("selected")
     }
 }
-else {
-    console.error("Les éléments avec les IDs spécifiés n'ont pas été trouvés.");
-}
+function gestion_login() {
+    if (sessionStorage.getItem("token")) {
+        let loginLogoutLink = document.getElementById("login_logout");
+        if (loginLogoutLink) {
+            loginLogoutLink.textContent = "logout";
+            loginLogoutLink.addEventListener("click", function (event) {
+                event.preventDefault();
+                sessionStorage.removeItem("token");
+                window.location.href = "index.html";
+            });
+        }
+        
+        let bandeau_edit = document.getElementById("edition");
+        if (bandeau_edit) {
+            bandeau_edit.style.display = "flex";
+        }
+        
+        let projet_modif = document.getElementById("modif_projet");
+        if (projet_modif) {
+            projet_modif.style.display = "inline";
+        }
+        
+        let button_filter = document.querySelector(".filter");
+        if (button_filter) {
+            button_filter.style.display = "none";
+        }
+    }
 }
 
-// Appel de la fonction lors du chargement de la page
-document.addEventListener("DOMContentLoaded", gestion_login);
- 
-//*********************************** */

@@ -1,20 +1,8 @@
 // CONSTANTES
-const GALLERY_MODALE = document.querySelector(".modal-gallery");
-const BUTTON_CLOSE = document.querySelector('.js-modal-close-1');
-const MODALE_WRAPPER = document.querySelector(".modal-wrapper");
-const BUTTON_MODIF_WORKS = document.querySelector('#modif-galerie');
+
+const BUTTON_MODIF_WORKS = document.querySelector("#projet_modif");
 
 let modal = null;
-
-// Fonction ouverture boite modale 
-const OPEN_MODAL = async function (e) {
-    e.preventDefault();
-    modal = document.querySelector("#modal1");
-    modal.style.display = null;
-    modal.addEventListener('click', CLOSE_MODAL);
-    BUTTON_CLOSE.addEventListener('click', CLOSE_MODAL);
-    MODALE_WRAPPER.style.display = "flex"; 
-};
 // Fonction fermeture boite modale 
 const CLOSE_MODAL = function (e) {
     if (modal == null) return;
@@ -27,6 +15,37 @@ const CLOSE_MODAL = function (e) {
     modal.removeEventListener('click', CLOSE_MODAL);
     BUTTON_CLOSE.removeEventListener('click', CLOSE_MODAL);
 };
+
+// Fonction ouverture boite modale 
+const OPEN_MODAL = async function (e) {
+    e.preventDefault();
+    modal = document.querySelector("#modal1");
+    if(modal){
+    modal.style.display = null;
+    modal.addEventListener('click', CLOSE_MODAL);
+    }
+
+    let BUTTON_CLOSE = document.querySelector('.js-modal-close-1');
+    if (BUTTON_CLOSE){
+    BUTTON_CLOSE.addEventListener('click', CLOSE_MODAL);
+    }
+
+    let MODALE_WRAPPER = document.querySelector(".modal-wrapper");
+    if(MODALE_WRAPPER){
+    MODALE_WRAPPER.style.display = "flex"
+    }
+
+    let GALLERY_MODALE = document.querySelector(".modal-gallery");
+    if (GALLERY_MODALE){
+    GALLERY_MODALE.innerHTML ='';
+    fetchdata(GALLERY_MODALE,true);
+    }
+
+};
+
+// Ajout listener sur clique bouton modifier pour appeler ouverture modale 
+BUTTON_MODIF_WORKS.addEventListener('click', OPEN_MODAL);
+
 
 // Fonction de suppression de travaux
 const DELETE_WORK = function (e) {
@@ -70,7 +89,8 @@ function deleteWorkFetch(idWork, categoryId) {
     .then(response => {
         if (response.status === 200 || response.status === 201 || response.status === 204) {
             // Rafraîchit la galerie après la suppression
-             refreshGallery();
+             refreshGallery(GALLERY_MODALE,true);
+             refreshGallery(galleryContainer,true);
             if (categoryId !== undefined) {
                 addSelectedClass(categoryId); // Ajouter la classe "selected" à la catégorie sélectionnée si categoryId est défini
             }
@@ -79,14 +99,3 @@ function deleteWorkFetch(idWork, categoryId) {
         }
     });
 }
-
-//CREATION D'UN BOUTON SUPPRIMER POUR CHAQUE IMAGE
-function createDeleteButton(figure, work) {
-    let button = document.createElement('i');
-    button.classList.add("fa-regular", "fa-trash-can");
-    button.addEventListener('click', DELETE_WORK)
-    button.id = work.id
-    figure.appendChild(button);
-}
-   // Ajout listener sur clique bouton modifier pour appeler ouverture modale 
-   BUTTON_MODIF_WORKS.addEventListener('click', OPEN_MODAL);

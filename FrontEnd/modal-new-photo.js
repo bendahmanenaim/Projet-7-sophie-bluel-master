@@ -9,7 +9,6 @@ const PICTURE_SELECTION = document.querySelector('.picture-selection');
 const CATEGORIES_SELECT = document.querySelector('.select-category');
 const TITLE_NEW_PHOTO = document.querySelector('.input-titre');
 const BUTTON_SUBMIT = document.querySelector('.button-submit');
-const CATEGORY_API = BASE_URL+"categories";
 
 let modal_new = null
 
