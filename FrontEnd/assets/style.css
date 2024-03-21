@@ -99,11 +99,11 @@ h2{
 	margin-top: 25px;
     margin-bottom: 30px;
 }
-.tous-button{
+.category{
 	background-color: #1D6154;
 	color:white;
 }
-button.filter-button {
+.category{
 	font-size: 18px;
     border: solid #1D6154 2px; 
     line-height: 2.5; 
@@ -116,13 +116,13 @@ button.filter-button {
     background-color: white;
 }
 
-button:hover {
+.category:hover {
 	background-color: #DEEBFF;
 	background-color: #1D6154;
     color: white;
 }
 
-button.filter-button.selected {
+.category.selected {
     background-color: #1D6154;
     color: #fff;
 }
@@ -186,6 +186,10 @@ h2 #projet_modif {
 	margin-right: 10px;
 	
 }
+#projet_modif:hover{
+	color: #B1663C;
+}
+
 
 /************ fin bouton modifier la galerie*********/
 
@@ -471,6 +475,17 @@ footer nav ul {
 	cursor: pointer;
 	font-size: 18px;
 }
+.fa-solid:hover{
+	background-color: #1D6154;
+	color: white;
+	border-radius: 60%;
+	
+}
+.fa-solid{
+	color: #1D6154;
+	padding: 6px;
+	margin: 2px;
+}
 
 .js-modal-close-new {
 	position:relative;
@@ -590,7 +605,7 @@ footer nav ul {
 .modal-back .fa-solid {
 	display: flex;
 	cursor: pointer;
-	font-size: 21px;
+	font-size: 20px;
 	/*background-color: white;*/
 }
 
@@ -679,6 +694,10 @@ footer nav ul {
 	font-size: 14px;
 	margin-top: 6px;
 	cursor: pointer;
+}
+.button-add-photo:hover{
+	background-color: #1D6154;
+	color: white;
 }
 
 .precision {

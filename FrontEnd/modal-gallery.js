@@ -1,6 +1,7 @@
 // CONSTANTES
 
 const BUTTON_MODIF_WORKS = document.querySelector("#projet_modif");
+const BUTTON_CLOSE = document.querySelector('.js-modal-close-1');
 
 let modal = null;
 // Fonction fermeture boite modale 
@@ -25,7 +26,7 @@ const OPEN_MODAL = async function (e) {
     modal.addEventListener('click', CLOSE_MODAL);
     }
 
-    let BUTTON_CLOSE = document.querySelector('.js-modal-close-1');
+    
     if (BUTTON_CLOSE){
     BUTTON_CLOSE.addEventListener('click', CLOSE_MODAL);
     }
@@ -38,7 +39,7 @@ const OPEN_MODAL = async function (e) {
     let GALLERY_MODALE = document.querySelector(".modal-gallery");
     if (GALLERY_MODALE){
     GALLERY_MODALE.innerHTML ='';
-    fetchdata(GALLERY_MODALE,true);
+    fetchData(GALLERY_MODALE,true);
     }
 
 };

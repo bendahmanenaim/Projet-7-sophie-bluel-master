@@ -7,7 +7,7 @@ const galleryContainer = document.querySelector(".gallery");
 const filterContainer = document.querySelector(".filter");
 
 //Affichage les travaux dans la galerie
-fetchData(galleryContainer.false);
+fetchData(galleryContainer,false);
 
 // Fonction pour rafraichire les travaux
 function refreshGallery(targetDiv, deleteButton){
@@ -19,15 +19,12 @@ function refreshGallery(targetDiv, deleteButton){
 // Fonction pour récupérer les données depuis le back-end
 function fetchData(targetDiv, deleteButton) {
      // Vérifie si targetDiv est défini et qu'il s'agit d'un élément DOM valide
-     if (!targetDiv || !(targetDiv instanceof Element)) {
-        console.error('targetDiv est undefined ou invalide. Assurez-vous de passer un élément DOM valide.');
-        
-    }
+    
     fetch (WORKS_API)
      .then (response => response.json())
      .then(works =>{
         workList=works;
-        for (let i=0; i< works.length; i++){
+        for (let i=0; i<works.length; i++){
             createWork(works[i], targetDiv, deleteButton);
 
         }
@@ -39,9 +36,9 @@ function fetchData(targetDiv, deleteButton) {
 function createWork(work, targetDiv, deleteButton) {
 
                     // Création des éléments HTML pour chaque projet et les ajoutez à la galerie
-                    let figure = document.createElement('figure');
-                    let imgWorks = document.createElement('img');
-                    let figcaption = document.createElement('figcaption');
+                    let figure = document.createElement("figure");
+                    let imgWorks = document.createElement("img");
+                    let figcaption = document.createElement("figcaption");
 
                     // Ajout des attributs et du contenu aux éléments créés
                     imgWorks.src = work.imageUrl;
@@ -72,7 +69,7 @@ fetch (CATEGORY_API)
 // Fonction pour créer les boutons de filtre
  function createFilterButton(category) {
     let categoryLink = document.createElement ("a")
-    categoryLink.id= "category"+category.id
+    categoryLink.id = "category"+category.id
     categoryLink.classList.add("category")
     categoryLink.innerHTML = category.name;
     filterContainer.appendChild(categoryLink)
@@ -87,7 +84,7 @@ fetch (CATEGORY_API)
     galleryContainer.innerHTML=''
     
     //
-    for (let i=0 ;i<workList.lengh; i++){
+    for (let i=0 ;i<workList.length; i++){
         if (workList[i].categoryId===categoryId || categoryId===0){
             createWork (workList[i],galleryContainer,false)
         }
@@ -121,21 +118,15 @@ function removeSelectedClass(){
 function gestion_login() {
     if (sessionStorage.getItem("token")) {
         let loginLogoutLink = document.getElementById("login_logout");
-        if (loginLogoutLink) {
+        
             loginLogoutLink.textContent = "logout";
-            loginLogoutLink.addEventListener("click", function (event) {
-                event.preventDefault();
-                sessionStorage.removeItem("token");
-                window.location.href = "index.html";
-            });
-        }
         
         let bandeau_edit = document.getElementById("edition");
         if (bandeau_edit) {
             bandeau_edit.style.display = "flex";
         }
         
-        let projet_modif = document.getElementById("modif_projet");
+        let projet_modif = document.querySelector(".js-modal");
         if (projet_modif) {
             projet_modif.style.display = "inline";
         }
@@ -144,6 +135,13 @@ function gestion_login() {
         if (button_filter) {
             button_filter.style.display = "none";
         }
+        loginLogoutLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            sessionStorage.removeItem("token");
+            window.location.href = "index.html";
+        });
+    
+        
     }
 }
 
