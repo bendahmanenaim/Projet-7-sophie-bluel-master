@@ -1,5 +1,5 @@
 // CONSTANTES
-
+const GALLERY_MODALE = document.querySelector(".modal-gallery");
 const BUTTON_MODIF_WORKS = document.querySelector("#projet_modif");
 const BUTTON_CLOSE = document.querySelector('.js-modal-close-1');
 
@@ -36,7 +36,7 @@ const OPEN_MODAL = async function (e) {
     MODALE_WRAPPER.style.display = "flex"
     }
 
-    let GALLERY_MODALE = document.querySelector(".modal-gallery");
+  
     if (GALLERY_MODALE){
     GALLERY_MODALE.innerHTML ='';
     fetchData(GALLERY_MODALE,true);

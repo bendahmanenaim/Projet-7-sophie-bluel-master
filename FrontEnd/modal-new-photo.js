@@ -135,9 +135,9 @@ const UPLOAD_WORK = function(){
             // Réinitialise le formulaire
             resetForm();
               // Rafraîchit l'affichage des travaux dans la modal
-            refreshWorks(GALLERY_MODALE, true);
+            refreshGallery(GALLERY_MODALE, true);
             // Rafraîchit l'affichage des travaux dans l'index
-            refreshWorks(GALLERY_DIV, false);
+            refreshGallery(galleryContainer, false);
             // Effectue une vérification du formulaire
             VERIFICATION();
         } else if (response.status === 401){
