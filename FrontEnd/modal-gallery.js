@@ -69,6 +69,7 @@ const DELETE_WORK = function (e) {
             if (deletedWorkFigure) {
                 GALLERY_MODALE.removeChild(deletedWorkFigure);
             }
+            
         } catch (error) {
             // Affiche une erreur en cas de problème lors de la suppression
             console.error("Erreur lors de la suppression du projet:", error);
@@ -91,7 +92,7 @@ function deleteWorkFetch(idWork, categoryId) {
         if (response.status === 200 || response.status === 201 || response.status === 204) {
             // Rafraîchit la galerie après la suppression
              refreshGallery(GALLERY_MODALE,true);
-             refreshGallery(galleryContainer,true);
+             refreshGallery(galleryContainer,false);
             if (categoryId !== undefined) {
                 addSelectedClass(categoryId); // Ajouter la classe "selected" à la catégorie sélectionnée si categoryId est défini
             }
